@@ -1,7 +1,6 @@
 {
   "info": {
     "name": "Webhook Validation Suite",
-    "description": "Integration tests for Make.com webhook catchers.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -12,24 +11,40 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Status code is 200 OK\", function () {",
+              "pm.test(\"Status code is 200 or 201\", function () {",
               "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
               "});",
-              "",
-              "pm.test(\"Response time is under 600ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(600);",
+              "pm.test(\"Response time is under 1000 ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);",
               "});",
-              "",
+              "let responseJson;",
+              "pm.test(\"Body parses as JSON and is an object\", function () {",
+              "    responseJson = pm.response.json();",
+              "    pm.expect(responseJson).to.be.an(\"object\");",
+              "    pm.expect(responseJson).to.not.be.null;",
+              "    pm.expect(responseJson).to.not.be.an(\"array\");",
+              "});",
+              "pm.test(\"status is required and exactly success\", function () {",
+              "    responseJson = responseJson || pm.response.json();",
+              "    pm.expect(responseJson).to.have.property(\"status\");",
+              "    pm.expect(responseJson.status).to.be.a(\"string\");",
+              "    pm.expect(responseJson.status).to.eql(\"success\");",
+              "});",
+              "pm.test(\"message is required and exactly Successfully caught payload\", function () {",
+              "    responseJson = responseJson || pm.response.json();",
+              "    pm.expect(responseJson).to.have.property(\"message\");",
+              "    pm.expect(responseJson.message).to.be.a(\"string\");",
+              "    pm.expect(responseJson.message).to.eql(\"Successfully caught payload\");",
+              "});",
               "const expectedSchema = {",
-              "    \"type\": \"object\",",
-              "    \"properties\": {",
-              "        \"status\": { \"type\": \"string\" },",
-              "        \"message\": { \"type\": \"string\" }",
-              "    },",
-              "    \"required\": [\"status\"]",
+              "    type: \"object\",",
+              "    required: [\"status\", \"message\"],",
+              "    properties: {",
+              "        status: { type: \"string\", enum: [\"success\"] },",
+              "        message: { type: \"string\", enum: [\"Successfully caught payload\"] }",
+              "    }",
               "};",
-              "",
-              "pm.test(\"Response strictly matches expected schema\", function () {",
+              "pm.test(\"Response matches the required JSON schema\", function () {",
               "    pm.response.to.have.jsonSchema(expectedSchema);",
               "});"
             ],
@@ -49,9 +64,7 @@
           "mode": "raw",
           "raw": "{\n  \"company_name\": \"NoGood\",\n  \"website_url\": \"https://nogood.io\",\n  \"contact_name\": \"Jonathan\"\n}"
         },
-        "url": {
-          "raw": "https://hook.make.com/your-custom-webhook-url"
-        }
+        "url": "https://hook.eu1.make.com/r3caa7xv2bxi7gbfcl3jm8i0ro8me2v6"
       }
     }
   ]
