@@ -1,0 +1,12 @@
+[
+  { "company_name": "NoGood", "website_url": "https://nogood.io", "contact_name": "Jonathan" },
+  { "company_name": "Disruptive Advertising", "website_url": "https://disruptiveadvertising.com", "contact_name": "Jacob" },
+  { "company_name": "Ignite Visibility", "website_url": "https://ignitevisibility.com", "contact_name": "William" },
+  { "company_name": "Power Digital Marketing", "website_url": "https://powerdigitalmarketing.com", "contact_name": "Grayson" },
+  { "company_name": "MuteSix", "website_url": "https://mutesix.com", "contact_name": "Steve" },
+  { "company_name": "Wpromote", "website_url": "https://wpromote.com", "contact_name": "Michael" },
+  { "company_name": "inBeat", "website_url": "https://inbeat.co", "contact_name": "David" },
+  { "company_name": "WebFX", "website_url": "https://www.webfx.com", "contact_name": "Thomas" },
+  { "company_name": "Common Thread Collective", "website_url": "https://commonthreadco.com", "contact_name": "Taylor" },
+  { "company_name": "Growth Hackers Digital", "website_url": "https://growthhackers.digital", "contact_name": "Sundeep" }
+]

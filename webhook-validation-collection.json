@@ -1,0 +1,58 @@
+{
+  "info": {
+    "name": "Webhook Validation Suite",
+    "description": "Integration tests for Make.com webhook catchers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Test Environment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              "",
+              "pm.test(\"Response time is under 600ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(600);",
+              "});",
+              "",
+              "const expectedSchema = {",
+              "    \"type\": \"object\",",
+              "    \"properties\": {",
+              "        \"status\": { \"type\": \"string\" },",
+              "        \"message\": { \"type\": \"string\" }",
+              "    },",
+              "    \"required\": [\"status\"]",
+              "};",
+              "",
+              "pm.test(\"Response strictly matches expected schema\", function () {",
+              "    pm.response.to.have.jsonSchema(expectedSchema);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company_name\": \"NoGood\",\n  \"website_url\": \"https://nogood.io\",\n  \"contact_name\": \"Jonathan\"\n}"
+        },
+        "url": {
+          "raw": "https://hook.make.com/your-custom-webhook-url"
+        }
+      }
+    }
+  ]
+}
